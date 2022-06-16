@@ -49,14 +49,6 @@ public class HeroShop : MonoBehaviour
         _views[_index].Enable();
     }
 
-    public List<HeroView> GetViews()
-    {
-        List<HeroView> newViewCollection = new List<HeroView>();
-
-        newViewCollection.AddRange(_views);
-        return newViewCollection;
-    }
-
     private void AddHero(Hero hero)
     {
         bool isEnable = false;
@@ -122,7 +114,9 @@ public class HeroShop : MonoBehaviour
         if (_index + 1 < _heroCreaters.Count && IsEnoughMoney(money) == true)
         {
             _index++;
-            _views[_index].Enable();
+
+            if (_index < _views.Count)
+                _views[_index].Enable();
         }
     }
 

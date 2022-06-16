@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProgressSaver : MonoBehaviour
@@ -14,66 +13,46 @@ public class ProgressSaver : MonoBehaviour
     private void Start()
     {
         _saveSystem = new BinarySave();
-        CreateData();
+        LoadDate();
         StartCoroutine(SaveOverTime());
     }
 
     private void OnApplicationPause(bool pause)
     {
         if (pause == true)
-        {
-            CreateData();
-            _saveSystem.Save(_progressData);
-        }
-        else if (_saveSystem != null)
-        {
-            _progressData = _saveSystem.Load();
-        }
+            SaveData();
     }
 
-    private void CreateData()
+    private void SaveData()
     {
         double money = _player.Money;
-        List<Hero> heroes = _player.GetHeroes();
-        List<HeroView> views = _heroShop.GetViews();
         int level = _levelHandler.CurrentLevel;
+        bool bossKilled = _levelHandler.BossKilled;
 
-        _progressData = new SaveData(money, heroes, views, level);
+        _progressData = new SaveData(money, level, bossKilled);
+        _saveSystem.Save(_progressData);
+        Debug.Log("Save!");
+    }
+
+    private void LoadDate()
+    {
+        if ((_progressData = _saveSystem.Load()) == null)
+            return;
+
+        _player.AddMoney(_progressData.Money);
+        _levelHandler.LoadLevel(_progressData.CurrentLevel, _progressData.BossKilled);        
+        Debug.Log("Load!");
     }
 
     private IEnumerator SaveOverTime()
     {
-        float timeDelayInSeconds = 60;
+        float timeDelayInSeconds = 180;
         WaitForSeconds waitForSeconds = new WaitForSeconds(timeDelayInSeconds);
 
         while (true)
         {
-            _saveSystem.Save(_progressData);
-
             yield return waitForSeconds;
+            SaveData();
         }
     }
 }
-
-//public static class ProgressSaver
-//{
-//    public static void Save<T>(string key, T saveData)
-//    {
-//        string jsonDataString = JsonUtility.ToJson(saveData);
-//        PlayerPrefs.SetString(key, jsonDataString);
-//    }
-
-//    public static T Load<T>(string key) where T: new()
-//    {
-//        if (PlayerPrefs.HasKey(key))
-//        {
-//            string loadedString = PlayerPrefs.GetString(key);
-
-//            return JsonUtility.FromJson<T>(loadedString);
-//        }
-//        else
-//        {
-//            return new T();
-//        }
-//    }
-//}

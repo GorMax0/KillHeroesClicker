@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Generic;
 
 [Serializable]
 public class SaveData
 {
-    private double _money;    
-    private List<Hero> _heroes;
-    private List<HeroView> _views;
-    private int _currentLevel;
+    public double Money { get; private set; }
+    public int CurrentLevel { get; private set; }
+    public bool BossKilled { get; private set; }
 
-    public SaveData(double money, List<Hero> heroes, List<HeroView> views, int level)
+    public SaveData(double money, int level, bool bossKilled)
     {
-        _money = money;
-        _heroes = heroes;   
-        _views = views;
-        _currentLevel = level;
+        Money = money;
+        CurrentLevel = level;
+        BossKilled = bossKilled;
     }
 }
