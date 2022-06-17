@@ -49,6 +49,14 @@ public class HeroShop : MonoBehaviour
         _views[_index].Enable();
     }
 
+    public List<HeroCreater> GetHeroCreaters()
+    {
+        List<HeroCreater> heroCreaters = new List<HeroCreater>();
+
+        heroCreaters.AddRange(_heroCreaters);
+        return heroCreaters;
+    }
+
     private void AddHero(Hero hero)
     {
         bool isEnable = false;

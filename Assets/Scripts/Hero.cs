@@ -20,7 +20,7 @@ public class Hero
         Damage = _baseDamage;
         IsDamagePerClick = creater.IsDamagePerClick;
 
-        DamageChanged?.Invoke(Damage,_damageMultiplier);
+        DamageChanged?.Invoke(Damage, _damageMultiplier);
     }
 
     public event UnityAction<int> LevelChanged;
@@ -34,6 +34,11 @@ public class Hero
     public double Damage { get; private set; }
     public bool IsDamagePerClick { get; private set; }
     public bool IsBuyed { get; private set; }
+
+    public void Load(HeroData data)
+    {
+        Buy(data.Level, data.Cost);
+    }
 
     public void Buy(int _numberOfLevelsForBuy, double newPrice)
     {

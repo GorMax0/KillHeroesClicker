@@ -1,10 +1,8 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[Serializable]
 public class HeroView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _level;

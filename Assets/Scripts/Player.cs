@@ -25,6 +25,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void LoadData(List<Hero> loadedHeroes, double money)
+    {
+        foreach (var loadedHero in loadedHeroes)
+        {
+            AddHero(loadedHero);
+        }
+
+        AddMoney(money);
+
+        Debug.Log($"Number of heroes of the list: {_heroes.Count}");
+    }
+
     public List<Hero> GetHeroes()
     {
         List<Hero> newHeroesCollection = new List<Hero>();
@@ -51,11 +63,16 @@ public class Player : MonoBehaviour
 
             if (buyedHero.IsBuyed == false)
             {
-                buyedHero.DamageChanged += AddDamage;
-                buyedHero.DamageMultiplierChanged += OnDamageMultiplierChanged;
-                _heroes.Add(buyedHero);
+                AddHero(buyedHero);
             }
         }
+    }
+
+    private void AddHero(Hero heroForAdd)
+    {
+        heroForAdd.DamageChanged += AddDamage;
+        heroForAdd.DamageMultiplierChanged += OnDamageMultiplierChanged;
+        _heroes.Add(heroForAdd);
     }
 
     private void AddDamage(double damage, float multiplier)
