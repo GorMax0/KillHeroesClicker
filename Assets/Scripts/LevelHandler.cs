@@ -19,21 +19,20 @@ public class LevelHandler : MonoBehaviour
     private int _enemiesPerLevel = 10;
     private int _countEnemiesDied;
     private float _healthMultiplier;
-    private bool _bossKilled = true;
+    private bool _previousLevelComplete = true;
     private Spawner _spawner;
 
     public event UnityAction<int, int, bool> EnemyCountChanged;
     public event UnityAction<string, int> LevelChanged;
     public event UnityAction<float> BossTimerChanged;
 
-    private bool IsBossLevel => _currentLevel % _bossLevel == 0;
-    public bool BossKilled => _bossKilled;
+    public bool IsBossLevel => _currentLevel % _bossLevel == 0;
     public int CurrentLevel => _currentLevel;
     public Enemy CurrentEnemy => _currentEnemy;
 
     private void Start()
     {
-        LoadLevel(_currentLevel, _bossKilled);
+        LoadLevel(_currentLevel, _previousLevelComplete);
         _healthMultiplier = 1;
     }
 
@@ -42,7 +41,7 @@ public class LevelHandler : MonoBehaviour
         if (_currentEnemy != null)
             return;
 
-        if (_bossKilled == true)
+        if (_previousLevelComplete == true)
         {
             if (_countEnemiesDied == _enemiesPerLevel || IsBossLevel == true)
             {
@@ -57,7 +56,7 @@ public class LevelHandler : MonoBehaviour
         SpawnEnemy();
     }
 
-    public void LoadLevel(int numberOfLevel, bool bossKilled)
+    public void LoadLevel(int numberOfLevel, bool previousLevelComplete)
     {
         if (numberOfLevel == 0)
         {
@@ -71,7 +70,7 @@ public class LevelHandler : MonoBehaviour
             CalculateHealthMultiplier();
         }
 
-        _bossKilled = bossKilled;
+        _previousLevelComplete = previousLevelComplete;
     }
 
     public void BackToBossLevel()
@@ -93,7 +92,7 @@ public class LevelHandler : MonoBehaviour
         int bossCount = 1;
         int enemyCount = 10;
 
-        if (IsBossLevel == true && _bossKilled == true)
+        if (IsBossLevel == true && _previousLevelComplete == true)
             ChangeLevelType(nextLevel);
 
 
@@ -101,7 +100,7 @@ public class LevelHandler : MonoBehaviour
         _countEnemiesDied = 0;
         _enemiesPerLevel = IsBossLevel ? bossCount : enemyCount;
         LevelChanged?.Invoke(_currentLevelType.Label, _currentLevel);
-        EnemyCountChanged?.Invoke(_countEnemiesDied, _enemiesPerLevel, _bossKilled);
+        EnemyCountChanged?.Invoke(_countEnemiesDied, _enemiesPerLevel, _previousLevelComplete);
     }
 
     private void ChangeLevelType(bool nextLevelType)
@@ -154,9 +153,9 @@ public class LevelHandler : MonoBehaviour
         float step = 0.1f;
         WaitForSeconds timerUpdateDelay = new WaitForSeconds(step);
 
-        _bossKilled = false;
+        _previousLevelComplete = false;
 
-        while (bossTimer > 0 && _bossKilled == false)
+        while (bossTimer > 0 && _previousLevelComplete == false)
         {
             if (bossTimer > 0)
             {
@@ -167,7 +166,7 @@ public class LevelHandler : MonoBehaviour
             }
         }
 
-        if (_bossKilled == false)
+        if (_previousLevelComplete == false)
         {
             UnsubscribeFromEnemy();
             SetPreviousLevel();
@@ -193,9 +192,9 @@ public class LevelHandler : MonoBehaviour
         UnsubscribeFromEnemy();
 
         if (IsBossLevel == true)
-            _bossKilled = true;
+            _previousLevelComplete = true;
 
         _countEnemiesDied++;
-        EnemyCountChanged?.Invoke(_countEnemiesDied, _enemiesPerLevel, _bossKilled);
+        EnemyCountChanged?.Invoke(_countEnemiesDied, _enemiesPerLevel, _previousLevelComplete);
     }
 }

@@ -27,9 +27,9 @@ public class ProgressSaver : MonoBehaviour
     {
         double money = _player.Money;
         int level = _levelHandler.CurrentLevel;
-        bool bossKilled = _levelHandler.BossKilled;
+        bool previousLevelComplete = _levelHandler.IsBossLevel ? false : true;
 
-        _progressData = new SaveData(money, level, bossKilled);
+        _progressData = new SaveData(money, level, previousLevelComplete);
         _saveSystem.Save(_progressData);
         Debug.Log("Save!");
     }
@@ -40,7 +40,7 @@ public class ProgressSaver : MonoBehaviour
             return;
 
         _player.AddMoney(_progressData.Money);
-        _levelHandler.LoadLevel(_progressData.CurrentLevel, _progressData.BossKilled);        
+        _levelHandler.LoadLevel(_progressData.CurrentLevel, _progressData.PreviousLevelComplete);
         Debug.Log("Load!");
     }
 
