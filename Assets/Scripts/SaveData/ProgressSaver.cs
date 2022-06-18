@@ -60,7 +60,8 @@ public class ProgressSaver : MonoBehaviour
             {
                 if (hero.Name.Equals(heroCreaters[i].Name))
                 {
-                    heroes.Add(new Hero(heroCreaters[i]));
+                    heroes.Add(new Hero(heroCreaters[i], hero.Id));
+                    continue;
                 }
             }
         }
@@ -71,6 +72,8 @@ public class ProgressSaver : MonoBehaviour
         {
             heroes[i].Load(data[i]);
         }
+
+        _heroShop.LoadBuyedHeroes(heroes);
     }
 
     private IEnumerator SaveOverTime()

@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
         List<Hero> newHeroesCollection = new List<Hero>();
 
         newHeroesCollection.AddRange(_heroes);
+
         return newHeroesCollection;
     }
 

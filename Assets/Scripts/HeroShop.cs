@@ -16,6 +16,22 @@ public class HeroShop : MonoBehaviour
     private float _multiplierPrice = 1.1f;
     private int _numberOfLevelsForSale;
 
+    private void Awake()
+    {
+        int indexFirstView = 0;
+
+        _sumPrices = new double[_heroCreaters.Count];
+
+        for (_index = 0; _index < _heroCreaters.Count; _index++)
+        {
+            AddHero(new Hero(_heroCreaters[_index], _index));
+            CalculateSumPrice(_views[_index]);
+        }
+
+        _index = indexFirstView;
+        _views[_index].Enable();
+    }
+
     private void OnEnable()
     {
         _player.MoneyChanged += OnMoneyChanged;
@@ -33,28 +49,32 @@ public class HeroShop : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        int indexFirstView = 0;
-
-        _sumPrices = new double[_heroCreaters.Count];
-
-        for (_index = 0; _index < _heroCreaters.Count; _index++)
-        {
-            AddHero(new Hero(_heroCreaters[_index]));
-            CalculateSumPrice(_views[_index]);
-        }
-
-        _index = indexFirstView;
-        _views[_index].Enable();
-    }
-
     public List<HeroCreater> GetHeroCreaters()
     {
         List<HeroCreater> heroCreaters = new List<HeroCreater>();
 
         heroCreaters.AddRange(_heroCreaters);
         return heroCreaters;
+    }
+
+    public void LoadBuyedHeroes(List<Hero> loadedHeroes)
+    {
+        foreach (var loadedHero in loadedHeroes)
+        {
+            for (int i = 0; i < _views.Count; i++)
+            {
+                if (loadedHero.Id.Equals(_views[i].Hero.Id))
+                {
+                    
+                    _views[i].Refresh(loadedHero);
+                    _views[i+1].Enable();
+                    continue;
+                }
+            }
+        }
+
+        CalculateSumPrices();
+        DisplayNextHero(_player.Money);
     }
 
     private void AddHero(Hero hero)
@@ -98,9 +118,6 @@ public class HeroShop : MonoBehaviour
         foreach (var view in _views)
         {
             CalculateSumPrice(view);
-
-            if (view.gameObject.activeSelf == false)
-                return;
         }
     }
 
@@ -126,6 +143,7 @@ public class HeroShop : MonoBehaviour
             if (_index < _views.Count)
                 _views[_index].Enable();
         }
+        Debug.Log(_index);
     }
 
     private double GetNewCost(HeroView view)

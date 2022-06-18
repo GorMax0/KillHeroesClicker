@@ -5,38 +5,41 @@ using UnityEngine.Events;
 [Serializable]
 public class Hero
 {
-    private double _baseDamage;
-    private float _damageMultiplier;
+    private double _baseDamage;    
     private float _damageMultiplierModifier;
 
-    public Hero(HeroCreater creater)
+    public Hero(HeroCreater creater, int id)
     {
+        Id = id;
         Name = creater.Name;
         Icon = creater.Icon;
         Cost = creater.Cost;
         _baseDamage = creater.BaseDamage;
-        _damageMultiplier = creater.DamageMultiplier;
-        _damageMultiplierModifier = _damageMultiplier;
+        DamageMultiplier = creater.DamageMultiplier;
+        _damageMultiplierModifier = DamageMultiplier;
         Damage = _baseDamage;
         IsDamagePerClick = creater.IsDamagePerClick;
 
-        DamageChanged?.Invoke(Damage, _damageMultiplier);
+        DamageChanged?.Invoke(Damage, DamageMultiplier);        
     }
 
     public event UnityAction<int> LevelChanged;
     public event UnityAction<double, float> DamageChanged;
     public event UnityAction<float> DamageMultiplierChanged;
 
+    public int Id { get; private set; }
     public int Level { get; private set; }
     public string Name { get; private set; }
     public Sprite Icon { get; private set; }
     public double Cost { get; private set; }
     public double Damage { get; private set; }
+    public float DamageMultiplier { get; private set; }
     public bool IsDamagePerClick { get; private set; }
     public bool IsBuyed { get; private set; }
 
     public void Load(HeroData data)
     {
+        Id = data.Id;
         Buy(data.Level, data.Cost);
     }
 
@@ -62,15 +65,15 @@ public class Hero
 
                 if (IsDamagePerClick == true)
                 {
-                    _damageMultiplier += _damageMultiplierModifier;
-                    DamageMultiplierChanged?.Invoke(_damageMultiplier);
+                    DamageMultiplier += _damageMultiplierModifier;
+                    DamageMultiplierChanged?.Invoke(DamageMultiplier);
                 }
                 else
                 {
                     if (Level % levelForMultiplicationSquared == 0)
-                        Damage *= _damageMultiplier * _damageMultiplier;
+                        Damage *= DamageMultiplier * DamageMultiplier;
                     else if (Level % levelForMultiplication == 0)
-                        Damage *= _damageMultiplier;
+                        Damage *= DamageMultiplier;
                 }
             }
 
@@ -78,6 +81,6 @@ public class Hero
         }
 
         LevelChanged?.Invoke(Level);
-        DamageChanged?.Invoke(Damage, _damageMultiplier);
+        DamageChanged?.Invoke(Damage, DamageMultiplier);
     }
 }

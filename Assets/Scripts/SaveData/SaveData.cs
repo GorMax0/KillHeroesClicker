@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]
 public class SaveData
@@ -21,9 +22,10 @@ public class SaveData
     {
         foreach (var hero in heroes)
         {
-            _heroesData.Add(new HeroData(hero.Level, hero.Name, hero.Cost));
+            _heroesData.Add(new HeroData(hero.Id, hero.Level, hero.Name, hero.Cost));
         }
 
+        _heroesData = _heroesData.OrderBy(hero => hero.Id).ToList();
         Money = money;
     }
 

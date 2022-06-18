@@ -41,12 +41,21 @@ public class HeroView : MonoBehaviour
         _name.text = hero.Name;
         _icon.sprite = hero.Icon;
         PriceDisplay(_hero.Cost);
-        OnDamageChanged(_hero.Damage);
+        OnDamageChanged(_hero.Damage,_hero.DamageMultiplier);
         gameObject.SetActive(false);       
 
         _hero.LevelChanged += OnLevelChanged;
         _hero.DamageChanged += OnDamageChanged;
         _multiplierLevelForSell.MultiplierChanged += OnMultiplierChanged;
+    }
+
+    public void Refresh(Hero loadedHero)
+    {
+        _hero = loadedHero;
+        OnLevelChanged(_hero.Level);
+        PriceDisplay(_hero.Cost);
+        OnDamageChanged(_hero.Damage,_hero.DamageMultiplier);
+        gameObject.SetActive(true);
     }
 
     public void PriceDisplay(double price)
@@ -79,12 +88,12 @@ public class HeroView : MonoBehaviour
         _level.text = "óð. " + level.ToString();
     }
 
-    private void OnDamageChanged(double damage, float multiplier = 0)
+    private void OnDamageChanged(double damage, float multiplier)
     {
         string damageText = NumericalFormatter.Format(damage);
 
         if (_hero.IsDamagePerClick == true)
-            _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÍ)" : $"{damageText} ÓÂÍ + {multiplier:P0} îò ÓÂÑ";
+            _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÍ)" : $"{damageText} ÓÂÍ + {multiplier:P1} îò ÓÂÑ";
         else
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÑ)" : $"{damageText} ÓÂÑ";
     }
