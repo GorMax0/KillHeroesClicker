@@ -18,7 +18,7 @@ public class LevelHandler : MonoBehaviour
     private Enemy _currentEnemy;
     private int _enemiesPerLevel = 10;
     private int _countEnemiesDied;
-    private float _healthMultiplier;
+    private double _healthMultiplier;
     private bool _previousLevelComplete = true;
     private Spawner _spawner;
 

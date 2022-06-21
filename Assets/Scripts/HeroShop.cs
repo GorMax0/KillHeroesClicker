@@ -69,6 +69,9 @@ public class HeroShop : MonoBehaviour
                 {
                     _views[i].Init(loadedHero);
 
+                    if (_views[i].Hero.IsBuyed == true)
+                        _views[i].Enable();
+
                     if (i + 1 < _views.Count)
                         _views[i + 1].Enable();
 

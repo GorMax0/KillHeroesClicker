@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     public string Name => _name;
     public double Reward => _reward;
 
-    public void Init(float healthMultiplier, Player player)
+    public void Init(double healthMultiplier, Player player)
     {
         float _rewardMultiplier = 0.09f;
 

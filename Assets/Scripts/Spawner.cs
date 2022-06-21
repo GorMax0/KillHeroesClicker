@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour
         return currentEnemy;
     }
 
-    public Enemy InvokeEnemy(Enemy enemyPrefab, float healthMultiplier, Player player)
+    public Enemy InvokeEnemy(Enemy enemyPrefab, double healthMultiplier, Player player)
     {
         foreach (var enemy in _enemies)
         {

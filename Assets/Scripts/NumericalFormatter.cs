@@ -6,8 +6,7 @@ public static class NumericalFormatter
         int indexSubstringChar = numberToString.IndexOf(',');
         numberToString = numberToString.Substring(0, indexSubstringChar < 0 ? numberToString.Length : indexSubstringChar);
         
-
-        if (numberToString.Length < 6)
+        if (number.ToString().Length < 18 && numberToString.Length < 6)
             return numberToString;
         else
             return number.ToString("#.###e0");
