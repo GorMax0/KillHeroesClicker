@@ -2631,7 +2631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damagePerSecond: 0
-  <Money>k__BackingField: 0
+  <Money>k__BackingField: 1e+18
 --- !u!4 &1459886102
 Transform:
   m_ObjectHideFlags: 0

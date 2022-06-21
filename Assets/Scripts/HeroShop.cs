@@ -59,20 +59,25 @@ public class HeroShop : MonoBehaviour
 
     public void LoadBuyedHeroes(List<Hero> loadedHeroes)
     {
+        int firstHero = 0;
+
         foreach (var loadedHero in loadedHeroes)
         {
             for (int i = 0; i < _views.Count; i++)
             {
                 if (loadedHero.Id.Equals(_views[i].Hero.Id))
                 {
-                    
-                    _views[i].Refresh(loadedHero);
-                    _views[i+1].Enable();
+                    _views[i].Init(loadedHero);
+
+                    if (i + 1 < _views.Count)
+                        _views[i + 1].Enable();
+
                     continue;
                 }
             }
         }
 
+        _views[firstHero].Enable();
         CalculateSumPrices();
         DisplayNextHero(_player.Money);
     }
@@ -143,7 +148,7 @@ public class HeroShop : MonoBehaviour
             if (_index < _views.Count)
                 _views[_index].Enable();
         }
-        Debug.Log(_index);
+
     }
 
     private double GetNewCost(HeroView view)

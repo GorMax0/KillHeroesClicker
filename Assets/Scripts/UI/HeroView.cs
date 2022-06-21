@@ -33,29 +33,29 @@ public class HeroView : MonoBehaviour
         _multiplierLevelForSell.MultiplierChanged -= OnMultiplierChanged;
     }
 
-    public void Init(Hero hero, MultiplierSell multiplierLevelForSell)
+    public void Init(Hero hero, MultiplierSell multiplierLevelForSell = null)
     {
-        _multiplierLevelForSell = multiplierLevelForSell;
+        if (_multiplierLevelForSell == null)
+        {
+            _multiplierLevelForSell = multiplierLevelForSell;
+            _multiplierLevelForSell.MultiplierChanged += OnMultiplierChanged;
+        }
 
         _hero = hero;
         _name.text = hero.Name;
         _icon.sprite = hero.Icon;
         PriceDisplay(_hero.Cost);
-        OnDamageChanged(_hero.Damage,_hero.DamageMultiplier);
-        gameObject.SetActive(false);       
+        gameObject.SetActive(false);
+
+        if (hero.Level != 0)
+        {
+            OnLevelChanged(hero.Level);
+        }
+
+        OnDamageChanged(hero.Damage, _hero.DamageMultiplier);
 
         _hero.LevelChanged += OnLevelChanged;
-        _hero.DamageChanged += OnDamageChanged;
-        _multiplierLevelForSell.MultiplierChanged += OnMultiplierChanged;
-    }
-
-    public void Refresh(Hero loadedHero)
-    {
-        _hero = loadedHero;
-        OnLevelChanged(_hero.Level);
-        PriceDisplay(_hero.Cost);
-        OnDamageChanged(_hero.Damage,_hero.DamageMultiplier);
-        gameObject.SetActive(true);
+        _hero.DamageChanged += OnDamageChanged;            
     }
 
     public void PriceDisplay(double price)
@@ -96,6 +96,8 @@ public class HeroView : MonoBehaviour
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÍ)" : $"{damageText} ÓÂÍ + {multiplier:P1} îò ÓÂÑ";
         else
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÑ)" : $"{damageText} ÓÂÑ";
+
+        Debug.Log("!");
     }
 
     private void OnMultiplierChanged(int multiplier)

@@ -16,5 +16,5 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: e3c9a552336836c4992da93e0e5399de, type: 3}
   _cost: 4500
   _baseDamage: 490
-  _damageMultiplier: 2
+  _damageMultiplier: 2.2
   _isDamagePerClick: 0

@@ -71,9 +71,20 @@ public class Hero
                 else
                 {
                     if (Level % levelForMultiplicationSquared == 0)
+                    {
+                        float ratioDamageMultiplierModifier = 0.3f;
+
+                        _baseDamage *= DamageMultiplier * DamageMultiplier;
                         Damage *= DamageMultiplier * DamageMultiplier;
+                        DamageMultiplier += ratioDamageMultiplierModifier;
+                    }
                     else if (Level % levelForMultiplication == 0)
+                    {
+                        float ratioDamageMultiplierModifier = 0.1f;
+
                         Damage *= DamageMultiplier;
+                        DamageMultiplier += ratioDamageMultiplierModifier;
+                    }
                 }
             }
 
