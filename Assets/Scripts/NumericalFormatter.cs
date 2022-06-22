@@ -5,7 +5,7 @@ public static class NumericalFormatter
         string numberToString = number.ToString();
         int indexSubstringChar = numberToString.IndexOf(',');
         numberToString = numberToString.Substring(0, indexSubstringChar < 0 ? numberToString.Length : indexSubstringChar);
-        
+
         if (number.ToString().Length < 18 && numberToString.Length < 6)
             return numberToString;
         else

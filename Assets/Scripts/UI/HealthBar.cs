@@ -7,6 +7,8 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private TMP_Text _healthText;
+    [SerializeField] private Image _fill;
+    [SerializeField] private Gradient _healthGradient;
     [SerializeField, Space] private WrapButton _wrap;
     [SerializeField] private float _wrappingPositionY;
     [SerializeField] private float _unwrappingPositionY;
@@ -47,6 +49,8 @@ public class HealthBar : MonoBehaviour
 
         sliderValue = (float)(health / _maxHealth);
         _slider.value = sliderValue;
+
+        _fill.color = _healthGradient.Evaluate(sliderValue);
         _healthText.text = health > 0 ? NumericalFormatter.Format(health) : "!";
     }
 

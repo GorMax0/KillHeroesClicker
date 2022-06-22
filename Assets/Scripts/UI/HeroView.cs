@@ -55,7 +55,7 @@ public class HeroView : MonoBehaviour
         OnDamageChanged(hero.Damage, _hero.DamageMultiplier);
 
         _hero.LevelChanged += OnLevelChanged;
-        _hero.DamageChanged += OnDamageChanged;            
+        _hero.DamageChanged += OnDamageChanged;
     }
 
     public void PriceDisplay(double price)
@@ -96,8 +96,6 @@ public class HeroView : MonoBehaviour
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÍ)" : $"{damageText} ÓÂÍ + {multiplier:P1} îò ÓÂÑ";
         else
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÑ)" : $"{damageText} ÓÂÑ";
-
-        Debug.Log("!");
     }
 
     private void OnMultiplierChanged(int multiplier)
