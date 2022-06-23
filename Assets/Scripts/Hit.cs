@@ -5,7 +5,7 @@ public class Hit : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Player _player;
     [SerializeField] private LevelHandler _levelHandler;
-    [SerializeField] private TextEffectPool _damageTextEffect;
+    [SerializeField] private EffectPool _damageTextEffect;
     [SerializeField] private Color _textColor;
 
     public void OnPointerDown(PointerEventData eventData)
