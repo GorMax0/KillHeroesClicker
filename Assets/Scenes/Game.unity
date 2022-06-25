@@ -2803,6 +2803,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad95e944175f3bf47bcf70fb8d05611d, type: 2}
   - {fileID: 11400000, guid: 90c4ecb6fef17cc4b9ef5175e11d66b1, type: 2}
   - {fileID: 11400000, guid: 1af60dbe32f36e64ea51633ce0855b51, type: 2}
+  - {fileID: 11400000, guid: 76a0b742db04fa24793b6f6a4de9a557, type: 2}
+  - {fileID: 11400000, guid: b31e7eeeced07374ca5157afcf177d4d, type: 2}
   _player: {fileID: 1459886101}
   _template: {fileID: -428099871033963449, guid: 58d427e6254eea146a3405b1c7f5005f, type: 3}
   _container: {fileID: 748226822}
@@ -3435,7 +3437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damagePerSecond: 0
-  <Money>k__BackingField: 0
+  <Money>k__BackingField: 15500000000000000
 --- !u!4 &1459886102
 Transform:
   m_ObjectHideFlags: 0
