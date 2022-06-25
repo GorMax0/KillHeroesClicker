@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,7 @@ public class ProgressSaver : MonoBehaviour
         _progressData = new SaveData();
         _progressData.SetPlayerData(_player.GetHeroes(), money);
         _progressData.SetLevelData(level, previousLevelComplete);
+        _progressData.SetDateTimeNow(DateTime.UtcNow);
         _saveSystem.Save(_progressData);
         Debug.Log("Save!");
     }
@@ -42,8 +44,24 @@ public class ProgressSaver : MonoBehaviour
         if ((_progressData = _saveSystem.Load()) == null)
             return;
 
+        int secondsPerMinute = 60;
+        int minutesPerHour = 60;
+        int hoursPerDay = 24;
+        int tenMinutes = 10;
+        int minimumAbsenceTime = secondsPerMinute * tenMinutes;
+        int timeSpanRestriction = hoursPerDay * minutesPerHour * secondsPerMinute;
+        double timePassedInSeconds = (DateTime.UtcNow - _progressData.DateTimeNow).TotalSeconds;
+
+        Debug.Log(timePassedInSeconds);
+
+        if(timePassedInSeconds > timeSpanRestriction)
+            timePassedInSeconds = timeSpanRestriction;
+
+        if (timePassedInSeconds < minimumAbsenceTime)
+            timePassedInSeconds = default;
+
         LoadPlayerData();
-        _levelHandler.LoadLevel(_progressData.CurrentLevel, _progressData.PreviousLevelComplete);
+        _levelHandler.LoadLevel(_progressData.CurrentLevel, _progressData.PreviousLevelComplete, timePassedInSeconds);
 
         Debug.Log("Load!");
     }

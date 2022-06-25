@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public event UnityAction<Enemy> Died;
 
     public string Name => _name;
+    public double Health => _currentHealth;
     public double Reward => _reward;
 
     public void Init(double healthMultiplier, Player player)

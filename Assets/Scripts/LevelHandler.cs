@@ -10,6 +10,7 @@ public class LevelHandler : MonoBehaviour
     [SerializeField] private float _difficulty;
     [SerializeField] private float _enemyHealthMultiplier;
     [SerializeField] private float _bossHealthMultiplier;
+    [SerializeField] private Effect _rewardEffect;
 
     private readonly int _bossLevel = 5;
     private int _currentLevel;
@@ -21,6 +22,7 @@ public class LevelHandler : MonoBehaviour
     private double _healthMultiplier;
     private bool _previousLevelComplete = true;
     private Spawner _spawner;
+    private bool _isLoaded;
 
     public event UnityAction<int, int, bool> EnemyCountChanged;
     public event UnityAction<string, int> LevelChanged;
@@ -32,8 +34,11 @@ public class LevelHandler : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel(_currentLevel, _previousLevelComplete);
-        _healthMultiplier = 1;
+        if (_isLoaded == false)
+        {
+            LoadLevel(_currentLevel, _previousLevelComplete);
+            _healthMultiplier = 1;
+        }
     }
 
     private void Update()
@@ -54,9 +59,10 @@ public class LevelHandler : MonoBehaviour
             StartCoroutine(TryKillBoss());
 
         SpawnEnemy();
+        _rewardEffect.Initiate(_currentEnemy, transform.position);
     }
 
-    public void LoadLevel(int numberOfLevel, bool previousLevelComplete)
+    public void LoadLevel(int numberOfLevel, bool previousLevelComplete, double timeAfterSave = 0)
     {
         if (numberOfLevel == 0)
         {
@@ -71,6 +77,8 @@ public class LevelHandler : MonoBehaviour
         }
 
         _previousLevelComplete = previousLevelComplete;
+        _isLoaded = true;
+        StartCoroutine(CalculateRewardAbsence(timeAfterSave));
     }
 
     public void BackToBossLevel()
@@ -184,6 +192,24 @@ public class LevelHandler : MonoBehaviour
         _currentEnemy.Died -= OnEnemyDied;
         _currentEnemy.gameObject.SetActive(false);
         _currentEnemy = null;
+    }
+
+    private IEnumerator CalculateRewardAbsence(double timeAfterSave)
+    {
+        do
+        {
+            yield return null;
+
+            Debug.Log("Work!");
+            if (_currentEnemy == null)
+                continue;
+
+            float bonusMultiplier = 0.045f;
+            double absenceBonus = (int)(_player.DamagePerSecond * timeAfterSave / _currentEnemy.Health) * bonusMultiplier;
+            _player.AddMoney(absenceBonus);
+            Debug.Log($"Money added +{absenceBonus}");
+        } while (_currentEnemy == null);
+
     }
 
     private void OnEnemyDied(Enemy enemy)

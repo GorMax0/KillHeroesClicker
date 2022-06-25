@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,7 @@ public class SaveData
     public double Money { get; private set; }
     public int CurrentLevel { get; private set; }
     public bool PreviousLevelComplete { get; private set; }
+    public DateTime DateTimeNow { get; private set; }
 
     public List<HeroData> GetHeroesData()
     {
@@ -33,5 +35,11 @@ public class SaveData
     {
         CurrentLevel = level;
         PreviousLevelComplete = previousLevelComplete;
+    }
+
+    public void SetDateTimeNow(DateTime now)
+    {
+        if (now != null)
+            DateTimeNow = now;
     }
 }

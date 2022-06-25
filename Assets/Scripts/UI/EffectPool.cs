@@ -8,24 +8,24 @@ public class EffectPool : MonoBehaviour
 
     private List<Effect> _effects = new List<Effect>();
 
-    public void InvokeEffect(Color textColor, double value)
+    public void InvokeEffect(double value)
     {
         foreach (Effect _effect in _effects)
         {
             if (_effect.gameObject.activeSelf == false)
             {
-                _effect.Initiate(_parent.position, textColor, value);
+                _effect.Initiate(_parent.position, value);
                 return;
             }
         }
 
-        CreateEffect(textColor, value);
+        CreateEffect(value);
     }
 
-    private void CreateEffect(Color textColor, double value)
+    private void CreateEffect(double value)
     {
         Effect effectText = Instantiate(_template, _parent.transform, false);
-        effectText.Initiate(_parent.position, textColor, value);
+        effectText.Initiate(_parent.position, value);
         _effects.Add(effectText);
     }
 }

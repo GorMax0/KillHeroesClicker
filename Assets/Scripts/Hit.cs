@@ -13,7 +13,7 @@ public class Hit : MonoBehaviour, IPointerDownHandler
         if (_levelHandler.CurrentEnemy != null)
         {
             _levelHandler.CurrentEnemy.ReceiveDamage(_player.DamagePerClick);
-            _damageTextEffect.InvokeEffect(_textColor, _player.DamagePerClick);
+            _damageTextEffect.InvokeEffect( _player.DamagePerClick);
         }
     }
 }

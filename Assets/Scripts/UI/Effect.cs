@@ -4,10 +4,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(TMP_Text), typeof(CanvasGroup), typeof(AudioSource))]
 public abstract class Effect : MonoBehaviour
-{
-    protected readonly float Step = 0.02f;
-    protected readonly float MinimumVisibility = 0.1f;
-    protected bool EffectIsOver = false;
+{    
+    protected readonly float MinimumVisibility = 0.15f;
+    private float _fullVisibility = 1f;
     protected TMP_Text Text;
     protected CanvasGroup CanvasGroup;
     protected AudioSource AudioSource;
@@ -19,17 +18,26 @@ public abstract class Effect : MonoBehaviour
         AudioSource = GetComponent<AudioSource>();
     }
 
-    public void Initiate(Vector3 position, Color textColor, double value)
+    public void Initiate(Enemy enemy, Vector3 position)
     {
-        float fullVisibility = 1f;
+        enemy.Died += OnEnemyDied;
+    }
 
-        EffectIsOver = false;
+    public void Initiate(Vector3 position, double value)
+    {
         transform.position = position;
-        CanvasGroup.alpha = fullVisibility;
-        Text.outlineColor = textColor;
+        CanvasGroup.alpha = _fullVisibility;
         gameObject.SetActive(true);
         StartCoroutine(Play(value));
     }
 
     protected abstract IEnumerator Play(double value);
+
+    private void OnEnemyDied(Enemy enemy)
+    {
+        CanvasGroup.alpha = _fullVisibility;
+        gameObject.SetActive(true);
+        StartCoroutine(Play(enemy.Reward));
+        enemy.Died -= OnEnemyDied;
+    }
 }
