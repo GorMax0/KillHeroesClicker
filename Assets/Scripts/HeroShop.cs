@@ -45,7 +45,7 @@ public class HeroShop : MonoBehaviour
 
         foreach (var view in _views)
         {
-            view.SellButtonClick -= OnSellButtonClick;
+            view.SellButtonClicked -= OnSellButtonClick;
         }
     }
 
@@ -90,7 +90,7 @@ public class HeroShop : MonoBehaviour
         bool isEnable = false;
 
         HeroView view = Instantiate(_template, _container.transform);
-        view.SellButtonClick += OnSellButtonClick;
+        view.SellButtonClicked += OnSellButtonClick;
 
         view.Init(hero, _multiplierSell);
         view.ChangeInteractableButton(isEnable);

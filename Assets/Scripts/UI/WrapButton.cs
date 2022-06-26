@@ -33,21 +33,12 @@ public class WrapButton : MonoBehaviour
 
     public void Wrap()
     {
-        Vector3 mirrorY= _isWrapped == true ? new Vector3(1, 1, 1) : new Vector3(1, -1, 1);
+        float position = _isWrapped == true ? _unwrappingPositionY : _wrappingPositionY;
+        Vector3 mirrorY = new Vector3(1, _isWrapped ? 1 : -1, 1);
 
-        if (_isWrapped == true)
-        {
-            transform.DOMoveY(_unwrappingPositionY, _duration);
-            _imageButton.rectTransform.localScale = mirrorY;
-            _isWrapped = false;
-        }
-        else
-        {
-            transform.DOMoveY(_wrappingPositionY, _duration);
-            _imageButton.rectTransform.localScale = mirrorY;
-            _isWrapped = true;
-        }
-
+        _isWrapped = !_isWrapped;
+        transform.DOMoveY(position, _duration);
+        _imageButton.rectTransform.localScale = mirrorY;
         IsWrapped?.Invoke(_isWrapped, _duration);
     }
 }

@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private double _damagePerClick = 1d;
     private float _damagePerClickMultiplier;
-    [SerializeField] private double _damagePerSecond = 0d;
+    private double _damagePerSecond = 0d;
     private List<Hero> _heroes = new List<Hero>();
 
     public event UnityAction<double> MoneyChanged;

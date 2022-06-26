@@ -13,12 +13,11 @@ public class HeroView : MonoBehaviour
     [SerializeField] private TMP_Text _numberOfLevelsSell;
     [SerializeField] private Button _sellButton;
 
-    private Hero _hero;
     private MultiplierSell _multiplierLevelForSell;
 
-    public event UnityAction<Hero, HeroView> SellButtonClick;
+    public event UnityAction<Hero, HeroView> SellButtonClicked;
 
-    public Hero Hero => _hero;
+    public Hero Hero { get; private set; }
 
     private void OnEnable()
     {
@@ -28,8 +27,8 @@ public class HeroView : MonoBehaviour
     private void OnDisable()
     {
         _sellButton.onClick.RemoveListener(OnButtonClick);
-        _hero.LevelChanged -= OnLevelChanged;
-        _hero.DamageChanged -= OnDamageChanged;
+        Hero.LevelChanged -= OnLevelChanged;
+        Hero.DamageChanged -= OnDamageChanged;
         _multiplierLevelForSell.MultiplierChanged -= OnMultiplierChanged;
     }
 
@@ -41,10 +40,10 @@ public class HeroView : MonoBehaviour
             _multiplierLevelForSell.MultiplierChanged += OnMultiplierChanged;
         }
 
-        _hero = hero;
+        Hero = hero;
         _name.text = hero.Name;
         _icon.sprite = hero.Icon;
-        PriceDisplay(_hero.Cost);
+        PriceDisplay(Hero.Cost);
         gameObject.SetActive(false);
 
         if (hero.Level != 0)
@@ -52,10 +51,10 @@ public class HeroView : MonoBehaviour
             OnLevelChanged(hero.Level);
         }
 
-        OnDamageChanged(hero.Damage, _hero.DamageMultiplier);
+        OnDamageChanged(hero.Damage, Hero.DamageMultiplier);
 
-        _hero.LevelChanged += OnLevelChanged;
-        _hero.DamageChanged += OnDamageChanged;
+        Hero.LevelChanged += OnLevelChanged;
+        Hero.DamageChanged += OnDamageChanged;
     }
 
     public void PriceDisplay(double price)
@@ -77,7 +76,7 @@ public class HeroView : MonoBehaviour
 
     private void OnButtonClick()
     {
-        SellButtonClick?.Invoke(_hero, this);
+        SellButtonClicked?.Invoke(Hero, this);
     }
 
     private void OnLevelChanged(int level)
@@ -92,7 +91,7 @@ public class HeroView : MonoBehaviour
     {
         string damageText = NumericalFormatter.Format(damage);
 
-        if (_hero.IsDamagePerClick == true)
+        if (Hero.IsDamagePerClick == true)
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÍ)" : $"{damageText} ÓÂÍ + {multiplier:P1} îò ÓÂÑ";
         else
             _damage.text = _level.text.Length == 0 ? $"({damageText} ÓÂÑ)" : $"{damageText} ÓÂÑ";

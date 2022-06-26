@@ -14,8 +14,7 @@ public class DamageEffect : Effect
         float deviationY = transform.position.x * Random.Range(-deviation, deviation);
         Vector3 vectorDeviatino = new Vector3(deviationX, deviationY, 0);
         int indexAudioClip;
-        bool EffectIsOver = false;
-
+        
         transform.position += vectorDeviatino;
         Text.text = "-" + NumericalFormatter.Format(value);
 
@@ -26,13 +25,10 @@ public class DamageEffect : Effect
             AudioSource.Play();
         }
 
-        while (EffectIsOver != true)
+        while (CanvasGroup.alpha >= MinimumVisibility)
         {
             CanvasGroup.alpha = Mathf.Lerp(CanvasGroup.alpha, 0, step);
             transform.position += Vector3.up * speed * Time.deltaTime;
-
-            if (CanvasGroup.alpha <= MinimumVisibility)
-                EffectIsOver = true;
 
             yield return null;
         }
